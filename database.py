@@ -123,7 +123,7 @@ def seed_db():
 
     conn.commit()
     conn.close()
-    print("25 students, officers, aur posts add ho gaye!")
+    print("25 students, officers, and posts added successfully!")
 
 # ── Query Functions ──
 

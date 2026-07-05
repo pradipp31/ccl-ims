@@ -26,7 +26,7 @@ def login():
             session['student_name'] = student['name']
             return redirect('/dashboard')
         else:
-            error = "Galat email ya password!"
+            error = "Invalid email or password!"
 
     return render_template('login.html', error=error)
 
@@ -47,7 +47,7 @@ def logout():
 @app.route('/test-students')
 def test_students():
     students = get_all_students()
-    output = "<h2>25 Students Database Mein:</h2><ul>"
+    output = "<h2>25 Students Database:</h2><ul>"
     for s in students:
         output += f"<li>{s['name']} — {s['email']} — {s['college']}</li>"
     output += "</ul>"
