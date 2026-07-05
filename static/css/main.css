@@ -2,30 +2,32 @@
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: #0d1810;
-  color: #f0efeb;
+  background: #f5f7f6;
+  color: #1a1a1a;
   min-height: 100vh;
 }
+
+/* ══════════════ LOGIN PAGE ══════════════ */
 
 .login-wrap {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #0d1810 0%, #1a1a1a 100%);
+  background: linear-gradient(135deg, #f0f4f1 0%, #e8ede9 100%);
 }
 
 .login-card {
   width: 400px;
-  background: #1e1e1e;
-  border: 1px solid #2d4a2d;
+  background: #ffffff;
+  border: 1px solid #d5e0d7;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
 }
 
 .login-head {
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a2e1a 100%);
+  background: #ffffff;
   padding: 32px 28px 24px;
   text-align: center;
   border-bottom: 3px solid #27ae60;
@@ -37,26 +39,19 @@ body {
   margin-bottom: 12px;
 }
 
-.ccl-text {
-  font-size: 42px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  background: linear-gradient(90deg, #27ae60 0%, #1a1a1a 50%, #000000 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-family: Arial, sans-serif;
+.ccl-logo img {
+  height: 70px;
 }
 
 .login-head h1 {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
-  color: #f0efeb;
+  color: #1a1a1a;
   margin-bottom: 4px;
 }
 
 .login-head .tagline {
-  font-size: 10px;
+  font-size: 11px;
   color: #27ae60;
   font-style: italic;
   margin-bottom: 14px;
@@ -70,20 +65,20 @@ body {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;
-  padding: 4px 14px;
+  padding: 5px 14px;
   border-radius: 3px;
   text-transform: uppercase;
 }
 
-.login-body { padding: 28px; }
+.login-body { padding: 28px; background: #ffffff; }
 
 .login-error {
-  background: rgba(192,57,43,.15);
-  border: 1px solid #c0392b;
+  background: #fdecea;
+  border: 1px solid #e74c3c;
   border-radius: 3px;
   padding: 10px 14px;
   font-size: 12px;
-  color: #e74c3c;
+  color: #c0392b;
   margin-bottom: 16px;
 }
 
@@ -95,17 +90,17 @@ body {
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #7f9a7f;
+  color: #6b7d6d;
   margin-bottom: 5px;
 }
 
 .form-group input {
   width: 100%;
-  background: #0d1810;
-  border: 1px solid #2d4a2d;
+  background: #f7f9f7;
+  border: 1px solid #d5e0d7;
   border-radius: 3px;
   padding: 10px 12px;
-  color: #f0efeb;
+  color: #1a1a1a;
   font-size: 13px;
   outline: none;
   transition: border-color 0.2s;
@@ -122,47 +117,50 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(90deg, #27ae60, #1e8449);
+  background: #27ae60;
   color: #fff;
 }
-.btn-primary:hover { background: linear-gradient(90deg, #1e8449, #145a32); }
+.btn-primary:hover { background: #219a52; }
 
 .login-footer {
   padding: 14px 28px;
-  border-top: 1px solid #2d4a2d;
+  border-top: 1px solid #eef2ee;
   font-size: 11px;
-  color: #7f9a7f;
+  color: #8a9b8c;
   text-align: center;
-  background: #171717;
+  background: #fafbfa;
 }
 
-/* ── Dashboard Styles ── */
+/* ══════════════ DASHBOARD PAGE ══════════════ */
+
 .dash-wrap {
   min-height: 100vh;
-  background: #0d1810;
+  background: #f5f7f6;
 }
 
 .dash-header {
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a2e1a 100%);
+  background: #ffffff;
   border-bottom: 3px solid #27ae60;
   padding: 18px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .dash-header .ccl-mini {
   font-size: 22px;
   font-weight: 900;
-  background: linear-gradient(90deg, #27ae60 0%, #ffffff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #27ae60;
+  letter-spacing: 1px;
 }
 
 .dash-header .user-info {
-  color: #f0efeb;
+  color: #1a1a1a;
   font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .dash-header .logout-btn {
@@ -173,22 +171,24 @@ body {
   text-decoration: none;
   font-size: 12px;
   font-weight: 600;
-  margin-left: 12px;
 }
+
+.dash-header .logout-btn:hover { background: #a5301f; }
 
 .dash-body {
   padding: 32px;
-  color: #f0efeb;
+  color: #1a1a1a;
 }
 
 .dash-welcome {
   font-size: 24px;
   font-weight: 700;
   margin-bottom: 8px;
+  color: #1a1a1a;
 }
 
 .dash-sub {
-  color: #7f9a7f;
+  color: #6b7d6d;
   font-size: 13px;
   margin-bottom: 28px;
 }
@@ -200,23 +200,30 @@ body {
 }
 
 .dash-card {
-  background: #1e1e1e;
-  border: 1px solid #2d4a2d;
+  background: #ffffff;
+  border: 1px solid #e0e8e1;
   border-radius: 6px;
   padding: 20px;
   border-top: 3px solid #27ae60;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s;
+}
+
+.dash-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
 
 .dash-card h3 {
   font-size: 13px;
-  color: #7f9a7f;
+  color: #27ae60;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 8px;
+  font-weight: 700;
 }
 
 .dash-card p {
   font-size: 13px;
-  color: #f0efeb;
+  color: #5a6b5c;
   line-height: 1.6;
 }
