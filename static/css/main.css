@@ -2,7 +2,7 @@
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: #1a1a1a;
+  background: #0d1810;
   color: #f0efeb;
   min-height: 100vh;
 }
@@ -12,42 +12,73 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(135deg, #0d1810 0%, #1a1a1a 100%);
 }
 
 .login-card {
-  width: 380px;
-  background: #2e2e2e;
-  border: 1px solid #383838;
-  border-radius: 6px;
+  width: 400px;
+  background: #1e1e1e;
+  border: 1px solid #2d4a2d;
+  border-radius: 8px;
   overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
 }
 
 .login-head {
-  background: #1a1a1a;
-  padding: 28px;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a2e1a 100%);
+  padding: 32px 28px 24px;
   text-align: center;
-  border-bottom: 1px solid #383838;
+  border-bottom: 3px solid #27ae60;
+}
+
+.ccl-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.ccl-text {
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, #27ae60 0%, #1a1a1a 50%, #000000 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-family: Arial, sans-serif;
+}
+
+.login-head h1 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f0efeb;
+  margin-bottom: 4px;
+}
+
+.login-head .tagline {
+  font-size: 10px;
+  color: #27ae60;
+  font-style: italic;
+  margin-bottom: 14px;
+  letter-spacing: 0.5px;
 }
 
 .login-head .badge {
   display: inline-block;
-  background: #c0392b;
+  background: #27ae60;
   color: #fff;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 2px;
-  padding: 2px 10px;
-  margin-bottom: 10px;
+  letter-spacing: 1px;
+  padding: 4px 14px;
   border-radius: 3px;
+  text-transform: uppercase;
 }
-
-.login-head h1 { font-size: 18px; font-weight: 700; }
-.login-head p { font-size: 11px; color: #7f8c8d; margin-top: 3px; }
 
 .login-body { padding: 28px; }
 
 .login-error {
-  background: rgba(192,57,43,.12);
+  background: rgba(192,57,43,.15);
   border: 1px solid #c0392b;
   border-radius: 3px;
   padding: 10px 14px;
@@ -64,38 +95,128 @@ body {
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #7f8c8d;
+  color: #7f9a7f;
   margin-bottom: 5px;
 }
 
 .form-group input {
   width: 100%;
-  background: #1a1a1a;
-  border: 1px solid #383838;
+  background: #0d1810;
+  border: 1px solid #2d4a2d;
   border-radius: 3px;
-  padding: 9px 12px;
+  padding: 10px 12px;
   color: #f0efeb;
   font-size: 13px;
   outline: none;
+  transition: border-color 0.2s;
 }
 
-.form-group input:focus { border-color: #c0392b; }
+.form-group input:focus { border-color: #27ae60; }
 
 .btn {
   border: none;
   border-radius: 3px;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.btn-primary { background: #c0392b; color: #fff; }
-.btn-primary:hover { background: #922b21; }
+.btn-primary {
+  background: linear-gradient(90deg, #27ae60, #1e8449);
+  color: #fff;
+}
+.btn-primary:hover { background: linear-gradient(90deg, #1e8449, #145a32); }
 
 .login-footer {
-  padding: 16px 28px;
-  border-top: 1px solid #383838;
+  padding: 14px 28px;
+  border-top: 1px solid #2d4a2d;
   font-size: 11px;
-  color: #7f8c8d;
+  color: #7f9a7f;
   text-align: center;
+  background: #171717;
+}
+
+/* ── Dashboard Styles ── */
+.dash-wrap {
+  min-height: 100vh;
+  background: #0d1810;
+}
+
+.dash-header {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a2e1a 100%);
+  border-bottom: 3px solid #27ae60;
+  padding: 18px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dash-header .ccl-mini {
+  font-size: 22px;
+  font-weight: 900;
+  background: linear-gradient(90deg, #27ae60 0%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dash-header .user-info {
+  color: #f0efeb;
+  font-size: 13px;
+}
+
+.dash-header .logout-btn {
+  background: #c0392b;
+  color: #fff;
+  padding: 7px 16px;
+  border-radius: 3px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 12px;
+}
+
+.dash-body {
+  padding: 32px;
+  color: #f0efeb;
+}
+
+.dash-welcome {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.dash-sub {
+  color: #7f9a7f;
+  font-size: 13px;
+  margin-bottom: 28px;
+}
+
+.dash-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.dash-card {
+  background: #1e1e1e;
+  border: 1px solid #2d4a2d;
+  border-radius: 6px;
+  padding: 20px;
+  border-top: 3px solid #27ae60;
+}
+
+.dash-card h3 {
+  font-size: 13px;
+  color: #7f9a7f;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.dash-card p {
+  font-size: 13px;
+  color: #f0efeb;
+  line-height: 1.6;
 }

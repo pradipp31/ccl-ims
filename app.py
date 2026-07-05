@@ -35,7 +35,7 @@ def login():
 def dashboard():
     if 'student_email' not in session:
         return redirect('/login')
-    return f"<h1>Welcome {session['student_name']}!</h1><p>Login successful hua! Dashboard yahan banega.</p><a href='/logout'>Logout</a>"
+    return render_template('student_dashboard.html', name=session['student_name'])
 
 # ── LOGOUT ──
 @app.route('/logout')

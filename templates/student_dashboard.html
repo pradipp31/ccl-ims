@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CCL-IMS Dashboard</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+
+<div class="dash-wrap">
+  <div class="dash-header">
+    <div class="ccl-mini">CCL-IMS</div>
+    <div class="user-info">
+      {{ name }}
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+  </div>
+
+  <div class="dash-body">
+    <div class="dash-welcome">Welcome, {{ name }}! 👋</div>
+    <div class="dash-sub">Central Coalfields Limited — Internship Management System</div>
+
+    <div class="dash-cards">
+      <div class="dash-card">
+        <h3>My Applications</h3>
+        <p>Track your internship application status here.</p>
+      </div>
+      <div class="dash-card">
+        <h3>Available Posts</h3>
+        <p>Browse open internship opportunities.</p>
+      </div>
+      <div class="dash-card">
+        <h3>Profile</h3>
+        <p>View and update your registration details.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
