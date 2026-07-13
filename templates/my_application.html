@@ -12,13 +12,24 @@
       {% for app in applications %}
       <div class="dash-card">
         <h3>{{ app['title'] }}</h3>
-        <p>Department: {{ app['department'] }}<br>Applied: {{ app['applied_date'] }}</p>
-        <p style="margin-top:8px;">
-          <span style="padding:4px 10px; border-radius:3px; font-weight:700; font-size:11px;
-            {% if app['status'] == 'Pending' %} background:#f1c40f; color:#000;
-            {% elif app['status'] == 'Selected' %} background:#27ae60; color:#fff;
+        <p>Applied: {{ app['applied_date'] }}</p>
+        <p style="margin-top:8px;">HR Approval:
+          <span style="padding:3px 8px; border-radius:3px; font-size:11px; font-weight:700;
+            {% if app['hr_approval_status'] == 'Pending HR Approval' %} background:#f1c40f; color:#000;
+            {% elif app['hr_approval_status'] == 'Approved' %} background:#27ae60; color:#fff;
             {% else %} background:#c0392b; color:#fff; {% endif %}">
-            {{ app['status'] }}
+            {{ app['hr_approval_status'] }}
+          </span>
+        </p>
+        {% if app['assigned_department'] %}
+        <p style="margin-top:6px;">Department: {{ app['assigned_department'] }}</p>
+        {% endif %}
+        <p style="margin-top:6px;">Final Status:
+          <span style="padding:3px 8px; border-radius:3px; font-size:11px; font-weight:700;
+            {% if app['final_status'] == 'Pending' %} background:#f1c40f; color:#000;
+            {% elif app['final_status'] == 'Selected' %} background:#27ae60; color:#fff;
+            {% else %} background:#c0392b; color:#fff; {% endif %}">
+            {{ app['final_status'] }}
           </span>
         </p>
       </div>

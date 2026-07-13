@@ -1,18 +1,18 @@
 {% extends "base.html" %}
-{% block title %}Officer Dashboard{% endblock %}
+{% block title %}{{ department }} Dashboard{% endblock %}
 {% block content %}
 <div class="dash-wrap">
   <div class="dash-header">
-    <div class="ccl-mini">CCL-IMS</div>
-    <div class="user-info">{{ name }} <a href="/logout" class="logout-btn">Logout</a></div>
+    <div class="ccl-mini">CCL-IMS · {{ department }} Dept</div>
+    <div class="user-info">{{ name }} <a href="/officer-logout" class="logout-btn">Logout</a></div>
   </div>
   <div class="dash-body">
-    <div class="dash-welcome">All Applications</div>
+    <div class="dash-welcome">{{ department }} Department — Applications</div>
     <div class="dash-sub">
-      <a href="/officer/dashboard" style="color:#27ae60;">All</a> |
-      <a href="/officer/dashboard?status=Pending" style="color:#f1c40f;">Pending</a> |
-      <a href="/officer/dashboard?status=Selected" style="color:#27ae60;">Selected</a> |
-      <a href="/officer/dashboard?status=Rejected" style="color:#c0392b;">Rejected</a>
+      <a href="/department/dashboard" style="color:#27ae60;">All</a> |
+      <a href="/department/dashboard?status=Pending" style="color:#f1c40f;">Pending</a> |
+      <a href="/department/dashboard?status=Selected" style="color:#27ae60;">Selected</a> |
+      <a href="/department/dashboard?status=Rejected" style="color:#c0392b;">Rejected</a>
     </div>
     <table style="width:100%; border-collapse: collapse; margin-top:20px;">
       <tr style="border-bottom:1px solid #2d4a2d;">
@@ -27,9 +27,9 @@
         <td style="padding:10px;">{{ app['name'] }}</td>
         <td style="padding:10px;">{{ app['college'] }}</td>
         <td style="padding:10px;">{{ app['title'] }}</td>
-        <td style="padding:10px;">{{ app['status'] }}</td>
+        <td style="padding:10px;">{{ app['final_status'] }}</td>
         <td style="padding:10px;">
-          <form method="POST" action="/update-status/{{ app['id'] }}" style="display:flex; gap:6px;">
+          <form method="POST" action="/department/update-status/{{ app['id'] }}" style="display:flex; gap:6px;">
             <select name="status" style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d;">
               <option value="Pending">Pending</option>
               <option value="Selected">Selected</option>

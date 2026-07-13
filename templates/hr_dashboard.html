@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}HR Admin Dashboard{% endblock %}
+{% block content %}
+<div class="dash-wrap">
+  <div class="dash-header">
+    <div class="ccl-mini">CCL-IMS · HR Admin</div>
+    <div class="user-info">{{ name }} <a href="/officer-logout" class="logout-btn">Logout</a></div>
+  </div>
+  <div class="dash-body">
+    <div class="dash-welcome">Documents Pending Approval</div>
+    <table style="width:100%; border-collapse: collapse; margin-top:20px;">
+      <tr style="border-bottom:1px solid #2d4a2d;">
+        <th style="text-align:left; padding:10px; color:#7f9a7f;">Student</th>
+        <th style="text-align:left; padding:10px; color:#7f9a7f;">Post</th>
+        <th style="text-align:left; padding:10px; color:#7f9a7f;">Documents</th>
+        <th style="text-align:left; padding:10px; color:#7f9a7f;">Action</th>
+      </tr>
+      {% for app in applications %}
+      <tr style="border-bottom:1px solid #2d4a2d;">
+        <td style="padding:10px;">{{ app['name'] }} — {{ app['college'] }}</td>
+        <td style="padding:10px;">{{ app['title'] }}</td>
+        <td style="padding:10px;">
+          <a href="/{{ app['photo_path'] }}" target="_blank" style="color:#27ae60;">Photo</a> |
+          <a href="/{{ app['resume_path'] }}" target="_blank" style="color:#27ae60;">Resume</a> |
+          <a href="/{{ app['aadhar_path'] }}" target="_blank" style="color:#27ae60;">Aadhar</a> |
+          <a href="/{{ app['noc_path'] }}" target="_blank" style="color:#27ae60;">NOC</a> |
+          <a href="/{{ app['id_card_path'] }}" target="_blank" style="color:#27ae60;">ID Card</a>
+        </td>
+        <td style="padding:10px;">
+          <form method="POST" action="/hr/approve/{{ app['id'] }}" style="display:flex; gap:6px; margin-bottom:6px;">
+            <select name="department" style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d;">
+              <option value="HR">HR</option>
+              <option value="PR">PR</option>
+              <option value="ERP">ERP</option>
+            </select>
+            <button type="submit" class="btn btn-primary" style="padding:5px 10px;">Approve</button>
+          </form>
+          <form method="POST" action="/hr/reject/{{ app['id'] }}">
+            <button type="submit" class="btn" style="background:#c0392b; color:#fff; padding:5px 10px;">Reject</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}
