@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Register — CCL-IMS{% endblock %}
+{% block content %}
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-head">
+      <div class="ccl-logo">
+        <img src="{{ url_for('static', filename='images/ccl-logo.jpg') }}" alt="CCL Logo" style="height: 70px;">
+      </div>
+      <h1>Central Coalfields Limited</h1>
+      <p class="tagline">Student Registration</p>
+    </div>
+    <div class="login-body">
+      {% if error %}<div class="login-error">{{ error }}</div>{% endif %}
+      <form method="POST" action="/register">
+        <div class="form-group"><label>Full Name</label><input type="text" name="name" required></div>
+        <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+        <div class="form-group"><label>College</label><input type="text" name="college" required></div>
+        <div class="form-group"><label>Branch</label><input type="text" name="branch" required></div>
+        <div class="form-group"><label>Year</label><input type="text" name="year" required></div>
+        <div class="form-group"><label>Password</label><input type="password" name="password" required></div>
+        <div class="form-group"><label>Confirm Password</label><input type="password" name="confirm_password" required></div>
+        <button type="submit" class="btn btn-primary" style="width:100%; padding:12px;">Register</button>
+      </form>
+    </div>
+    <div class="login-footer"><a href="/login">Already registered? Login here</a></div>
+  </div>
+</div>
+{% endblock %}

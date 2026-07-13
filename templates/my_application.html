@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}My Applications{% endblock %}
+{% block content %}
+<div class="dash-wrap">
+  <div class="dash-header">
+    <div class="ccl-mini">CCL-IMS</div>
+    <div class="user-info"><a href="/dashboard" style="color:#f0efeb; margin-right:12px;">Dashboard</a><a href="/logout" class="logout-btn">Logout</a></div>
+  </div>
+  <div class="dash-body">
+    <div class="dash-welcome">My Applications</div>
+    <div class="dash-cards">
+      {% for app in applications %}
+      <div class="dash-card">
+        <h3>{{ app['title'] }}</h3>
+        <p>Department: {{ app['department'] }}<br>Applied: {{ app['applied_date'] }}</p>
+        <p style="margin-top:8px;">
+          <span style="padding:4px 10px; border-radius:3px; font-weight:700; font-size:11px;
+            {% if app['status'] == 'Pending' %} background:#f1c40f; color:#000;
+            {% elif app['status'] == 'Selected' %} background:#27ae60; color:#fff;
+            {% else %} background:#c0392b; color:#fff; {% endif %}">
+            {{ app['status'] }}
+          </span>
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

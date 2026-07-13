@@ -227,3 +227,5 @@ body {
   color: #5a6b5c;
   line-height: 1.6;
 }
+table th, table td { font-size: 13px; }
+a { color: #27ae60; text-decoration: none; }

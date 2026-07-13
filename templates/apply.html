@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Apply — {{ post['title'] }}{% endblock %}
+{% block content %}
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-head">
+      <h1>{{ post['title'] }}</h1>
+      <p class="tagline">{{ post['department'] }} — Last Date: {{ post['last_date'] }}</p>
+    </div>
+    <div class="login-body">
+      {% if submitted %}
+        <div class="login-error" style="color:#27ae60; border-color:#27ae60;">Application submitted successfully!</div>
+        <a href="/my-applications" class="btn btn-primary" style="display:block; text-align:center; padding:12px; text-decoration:none;">View My Applications</a>
+      {% else %}
+        {% if error %}<div class="login-error">{{ error }}</div>{% endif %}
+        <form method="POST">
+          <p style="color:#7f9a7f; margin-bottom:16px;">Click below to confirm your application for this post.</p>
+          <button type="submit" class="btn btn-primary" style="width:100%; padding:12px;">Confirm Apply</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
