@@ -9,7 +9,7 @@
     </div>
     <div class="login-body">
       {% if submitted %}
-        <div class="login-error" style="color:#27ae60; border-color:#27ae60;">Application aur documents successfully submit ho gaye! HR approval ka wait karo.</div>
+        <div class="login-error" style="color:#27ae60; border-color:#27ae60;">Application and documents submitted successfully! Please wait for HR approval.</div>
         <a href="/my-applications" class="btn btn-primary" style="display:block; text-align:center; padding:12px; text-decoration:none;">View My Applications</a>
       {% else %}
         {% if error %}<div class="login-error">{{ error }}</div>{% endif %}

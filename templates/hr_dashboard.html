@@ -20,12 +20,13 @@
         <td style="padding:10px;">{{ app['name'] }} — {{ app['college'] }}</td>
         <td style="padding:10px;">{{ app['title'] }}</td>
         <td style="padding:10px;">
-          <a href="/{{ app['photo_path'] }}" target="_blank" style="color:#27ae60;">Photo</a> |
-          <a href="/{{ app['resume_path'] }}" target="_blank" style="color:#27ae60;">Resume</a> |
-          <a href="/{{ app['aadhar_path'] }}" target="_blank" style="color:#27ae60;">Aadhar</a> |
-          <a href="/{{ app['noc_path'] }}" target="_blank" style="color:#27ae60;">NOC</a> |
-          <a href="/{{ app['id_card_path'] }}" target="_blank" style="color:#27ae60;">ID Card</a>
-        </td>
+  <a href="{{ url_for('static', filename=app['photo_path']) }}" target="_blank" style="color:#27ae60;">Photo</a> |
+  <a href="{{ url_for('static', filename=app['resume_path']) }}" target="_blank" style="color:#27ae60;">Resume</a> |
+  <a href="{{ url_for('static', filename=app['aadhar_path']) }}" target="_blank" style="color:#27ae60;">Aadhar</a> |
+  <a href="{{ url_for('static', filename=app['noc_path']) }}" target="_blank" style="color:#27ae60;">NOC</a> |
+  <a href="{{ url_for('static', filename=app['id_card_path']) }}" target="_blank" style="color:#27ae60;">ID Card</a>
+</td>
+
         <td style="padding:10px;">
           <form method="POST" action="/hr/approve/{{ app['id'] }}" style="display:flex; gap:6px; margin-bottom:6px;">
             <select name="department" style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d;">

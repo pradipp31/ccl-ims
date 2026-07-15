@@ -22,8 +22,6 @@ def init_db():
         year TEXT
     )''')
 
-    # officers ab role aur department dono rakhte hain
-    # role = 'admin_hr' (documents approve karta hai) ya 'department' (final decision leta hai)
     c.execute('''CREATE TABLE IF NOT EXISTS officers (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -42,7 +40,6 @@ def init_db():
         is_active INTEGER DEFAULT 1
     )''')
 
-    # applications mein documents ke path aur do-stage status hai
     c.execute('''CREATE TABLE IF NOT EXISTS applications (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         student_id INTEGER,
@@ -71,53 +68,55 @@ def seed_db():
     c.execute("SELECT COUNT(*) FROM students")
     if c.fetchone()[0] == 0:
         students = [
-            ("Rahul Kumar", "rahul1@test.com", "pass123", "BIT Sindri", "CSE", "3rd"),
-            ("Priya Sharma", "priya@test.com", "pass123", "NIT Jamshedpur", "ECE", "2nd"),
-            ("Amit Singh", "amit@test.com", "pass123", "RIT Jamshedpur", "ME", "4th"),
-            ("Sneha Gupta", "sneha@test.com", "pass123", "BIT Sindri", "CSE", "3rd"),
-            ("Rohan Mehta", "rohan@test.com", "pass123", "NIT Jamshedpur", "Civil", "1st"),
-            ("Anjali Verma", "anjali@test.com", "pass123", "RIT Jamshedpur", "ECE", "2nd"),
-            ("Vikas Yadav", "vikas@test.com", "pass123", "BIT Sindri", "ME", "4th"),
-            ("Pooja Kumari", "pooja@test.com", "pass123", "NIT Jamshedpur", "CSE", "3rd"),
-            ("Saurabh Jha", "saurabh@test.com", "pass123", "RIT Jamshedpur", "Civil", "2nd"),
-            ("Neha Rani", "neha@test.com", "pass123", "BIT Sindri", "ECE", "1st"),
-            ("Ankit Raj", "ankit@test.com", "pass123", "NIT Jamshedpur", "ME", "4th"),
-            ("Divya Kumari", "divya@test.com", "pass123", "RIT Jamshedpur", "CSE", "3rd"),
-            ("Manish Tiwari", "manish@test.com", "pass123", "BIT Sindri", "Civil", "2nd"),
-            ("Kavita Devi", "kavita@test.com", "pass123", "NIT Jamshedpur", "ECE", "1st"),
-            ("Suresh Prasad", "suresh@test.com", "pass123", "RIT Jamshedpur", "ME", "3rd"),
-            ("Ritu Kumari", "ritu@test.com", "pass123", "BIT Sindri", "CSE", "4th"),
-            ("Deepak Kumar", "deepak@test.com", "pass123", "NIT Jamshedpur", "Civil", "2nd"),
-            ("Shweta Singh", "shweta@test.com", "pass123", "RIT Jamshedpur", "ECE", "1st"),
-            ("Gaurav Ojha", "gaurav@test.com", "pass123", "BIT Sindri", "ME", "3rd"),
-            ("Nisha Kumari", "nisha@test.com", "pass123", "NIT Jamshedpur", "CSE", "2nd"),
-            ("Abhishek Anand", "abhishek@test.com", "pass123", "RIT Jamshedpur", "Civil", "4th"),
-            ("Komal Sinha", "komal@test.com", "pass123", "BIT Sindri", "ECE", "3rd"),
-            ("Rakesh Mahato", "rakesh@test.com", "pass123", "NIT Jamshedpur", "ME", "1st"),
-            ("Sunita Kumari", "sunita@test.com", "pass123", "RIT Jamshedpur", "CSE", "2nd"),
-            ("Vivek Kumar", "vivek@test.com", "pass123", "BIT Sindri", "Civil", "4th"),
+            ("Rahul Kumar", "rahul1@gmail.com", "pass123", "BIT Sindri", "CSE", "3rd"),
+            ("Priya Sharma", "priya@gmail.com", "pass123", "NIT Jamshedpur", "ECE", "2nd"),
+            ("Amit Singh", "amit@gmail.com", "pass123", "RIT Jamshedpur", "ME", "4th"),
+            ("Sneha Gupta", "sneha@gmail.com", "pass123", "BIT Sindri", "CSE", "3rd"),
+            ("Rohan Mehta", "rohan@gmail.com", "pass123", "NIT Jamshedpur", "Civil", "1st"),
+            ("Anjali Verma", "anjali@gmail.com", "pass123", "RIT Jamshedpur", "ECE", "2nd"),
+            ("Vikas Yadav", "vikas@gmail.com", "pass123", "BIT Sindri", "ME", "4th"),
+            ("Pooja Kumari", "pooja@gmail.com", "pass123", "NIT Jamshedpur", "CSE", "3rd"),
+            ("Saurabh Jha", "saurabh@gmail.com", "pass123", "RIT Jamshedpur", "Civil", "2nd"),
+            ("Neha Rani", "neha@gmail.com", "pass123", "BIT Sindri", "ECE", "1st"),
+            ("Ankit Raj", "ankit@gmail.com", "pass123", "NIT Jamshedpur", "ME", "4th"),
+            ("Divya Kumari", "divya@gmail.com", "pass123", "RIT Jamshedpur", "CSE", "3rd"),
+            ("Manish Tiwari", "manish@gmail.com", "pass123", "BIT Sindri", "Civil", "2nd"),
+            ("Kavita Devi", "kavita@gmail.com", "pass123", "NIT Jamshedpur", "ECE", "1st"),
+            ("Suresh Prasad", "suresh@gmail.com", "pass123", "RIT Jamshedpur", "ME", "3rd"),
+            ("Ritu Kumari", "ritu@gmail.com", "pass123", "BIT Sindri", "CSE", "4th"),
+            ("Deepak Kumar", "deepak@gmail.com", "pass123", "NIT Jamshedpur", "Civil", "2nd"),
+            ("Shweta Singh", "shweta@gmail.com", "pass123", "RIT Jamshedpur", "ECE", "1st"),
+            ("Gaurav Ojha", "gaurav@gmail.com", "pass123", "BIT Sindri", "ME", "3rd"),
+            ("Nisha Kumari", "nisha@gmail.com", "pass123", "NIT Jamshedpur", "CSE", "2nd"),
+            ("Abhishek Anand", "abhishek@gmail.com", "pass123", "RIT Jamshedpur", "Civil", "4th"),
+            ("Komal Sinha", "komal@gmail.com", "pass123", "BIT Sindri", "ECE", "3rd"),
+            ("Rakesh Mahato", "rakesh@gmail.com", "pass123", "NIT Jamshedpur", "ME", "1st"),
+            ("Sunita Kumari", "sunita@gmail.com", "pass123", "RIT Jamshedpur", "CSE", "2nd"),
+            ("Vivek Kumar", "vivek@gmail.com", "pass123", "BIT Sindri", "Civil", "4th"),
+            ("Pradip Kumar", "prdip31@gmail.com", "pradip3107", "BIT Sindri", "CSE", "3rd"),
+            ("Tanya Sinha", "tanya1@gmail.com", "tanya123", "NIT Jamshedpur", "ECE", "2nd"),
+            ("Harshit Harsh", "harshit2@gmail.com", "harshit3029", "RIT Jamshedpur", "ME", "4th"),
         ]
         c.executemany("INSERT INTO students (name, email, password, college, branch, year) VALUES (?,?,?,?,?,?)", students)
 
     c.execute("SELECT COUNT(*) FROM officers")
     if c.fetchone()[0] == 0:
         officers = [
-            # HR Admin — documents approve karta hai, department assign karta hai
-            ("HR Admin", "hradmin@ccl.com", "admin123", "admin_hr", None),
-            # Teen department officers — final decision lete hain
-            ("HR Officer", "hr@ccl.com", "hr123", "department", "HR"),
-            ("PR Officer", "pr@ccl.com", "pr123", "department", "PR"),
-            ("ERP Officer", "erp@ccl.com", "erp123", "department", "ERP"),
+            ("HR Admin", "hradmin@gmail.com", "admin123", "admin_hr", None),
+            ("HR Officer", "hrofficer@gmail.com", "hr123", "department", "HR"),
+            ("PR Officer", "profficer@gmail.com", "pr123", "department", "PR"),
+            ("ERP Officer", "erpofficer@gmail.com", "erp123", "department", "ERP"),
         ]
         c.executemany("INSERT INTO officers (name, email, password, role, department) VALUES (?,?,?,?,?)", officers)
 
     c.execute("SELECT COUNT(*) FROM internship_posts")
     if c.fetchone()[0] == 0:
         posts = [
-            ("IT Intern", "IT Department", 5, "2026-08-15", 1),
-            ("Mining Engineer Intern", "Mining", 3, "2026-08-20", 1),
-            ("HR Intern", "Human Resources", 2, "2026-08-10", 1),
-            ("Finance Intern", "Finance", 4, "2026-08-25", 1),
+            ("IT Intern", "ERP", 25, "2026-07-25", 1),
+            ("Mining Engineer Intern", "ERP", 25, "2026-07-25", 1),
+            ("HR Intern", "HR", 25, "2026-07-25", 1),
+            ("Finance Intern", "ERP", 25, "2026-07-25", 1),
+            ("Public Relations Intern", "PR", 25, "2026-07-25", 1),
         ]
         c.executemany("INSERT INTO internship_posts (title, department, total_seats, last_date, is_active) VALUES (?,?,?,?,?)", posts)
 
@@ -175,7 +174,7 @@ def get_post_by_id(post_id):
     conn.close()
     return post
 
-# ── APPLICATION FUNCTIONS (with documents) ──
+# ── APPLICATION FUNCTIONS ──
 def save_application(student_id, post_id, applied_date, photo, resume, aadhar, noc, id_card):
     conn = get_db()
     existing = conn.execute("SELECT * FROM applications WHERE student_id=? AND post_id=?",
@@ -208,7 +207,7 @@ def get_pending_hr_applications():
     conn = get_db()
     apps = conn.execute('''
         SELECT applications.*, students.name, students.college, students.branch,
-               internship_posts.title
+               internship_posts.title, internship_posts.department
         FROM applications
         JOIN students ON applications.student_id = students.id
         JOIN internship_posts ON applications.post_id = internship_posts.id
@@ -257,4 +256,5 @@ def update_final_status(app_id, new_status):
     conn.execute("UPDATE applications SET final_status = ? WHERE id = ?", (new_status, app_id))
     conn.commit()
     conn.close()
+
 

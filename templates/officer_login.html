@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Officer Portal — CCL-IMS{% endblock %}
+{% block content %}
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-head">
+      <div class="ccl-logo">
+        <img src="{{ url_for('static', filename='images/ccl-logo.jpg') }}" alt="CCL Logo" style="height: 70px;">
+      </div>
+      <h1>Central Coalfields Limited</h1>
+      <p class="tagline">Officer Portal — HR / PR / ERP</p>
+      <div class="badge">Staff Login</div>
+    </div>
+    <div class="login-body">
+      {% if error %}<div class="login-error">{{ error }}</div>{% endif %}
+      <form method="POST" action="/officer-login">
+        <div class="form-group"><label>Officer Email</label><input type="email" name="email" required></div>
+        <div class="form-group"><label>Password</label><input type="password" name="password" required></div>
+        <button type="submit" class="btn btn-primary" style="width:100%; padding:12px;">Officer Login</button>
+      </form>
+    </div>
+    <div class="login-footer"><a href="/login">Are you a student? Login here</a> · <a href="/">Back to Home</a></div>
+  </div>
+</div>
+{% endblock %}

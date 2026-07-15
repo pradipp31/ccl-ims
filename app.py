@@ -27,20 +27,24 @@ def save_uploaded_file(file, student_id, doc_name):
         return f"uploads/{filename}"
     return None
 
-# ── HOME ──
+# ── HOME — Landing page jahan se Student ya Officer choose karte hain ──
 @app.route('/')
 def home():
     if 'student_email' in session:
         return redirect('/dashboard')
-    return redirect('/login')
+    if 'officer_email' in session:
+        if session.get('officer_role') == 'admin_hr':
+            return redirect('/hr/dashboard')
+        return redirect('/department/dashboard')
+    return render_template('select_login.html')
 
 # ── STUDENT LOGIN ──
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+        email = request.form['email'].strip()
+        password = request.form['password'].strip()
         student = get_student(email)
         if student and student['password'] == password:
             session['student_email'] = student['email']
@@ -56,8 +60,8 @@ def login():
 def officer_login():
     error = None
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+        email = request.form['email'].strip()
+        password = request.form['password'].strip()
         officer = get_officer(email)
         if officer and officer['password'] == password:
             session['officer_email'] = officer['email']
@@ -78,7 +82,7 @@ def register():
     error = None
     if request.method == 'POST':
         name = request.form['name']
-        email = request.form['email']
+        email = request.form['email'].strip()
         password = request.form['password']
         confirm = request.form['confirm_password']
         college = request.form['college']
@@ -126,14 +130,15 @@ def apply(post_id):
 
         if not all([photo, resume, aadhar, noc, id_card]):
             return render_template('apply.html', post=post, submitted=False,
-                                    error="Saare documents upload karna zaroori hai (PDF/JPG/PNG)!")
+                                    error="All documents must be uploaded (PDF/JPG/PNG format only)!")
 
         today = date.today().isoformat()
         success = save_application(student_id, post_id, today, photo, resume, aadhar, noc, id_card)
         if success:
             return render_template('apply.html', post=post, submitted=True)
         else:
-            return render_template('apply.html', post=post, submitted=False, error="Aap already apply kar chuke ho!")
+            return render_template('apply.html', post=post, submitted=False,
+                                    error="You have already applied for this post!")
 
     return render_template('apply.html', post=post, submitted=False)
 
@@ -198,8 +203,19 @@ def officer_logout():
     session.clear()
     return redirect('/officer-login')
 
+# ── DEBUG ROUTE — Database verify karne ke liye (testing ke baad hata sakte ho) ──
+@app.route('/test-students')
+def test_students():
+    students = get_all_students()
+    output = "<h2>Students in Database (" + str(len(students)) + " total):</h2><ul>"
+    for s in students:
+        output += f"<li>{s['name']} — EMAIL: [{s['email']}] — PASSWORD: [{s['password']}]</li>"
+    output += "</ul>"
+    return output
+
 # ── MAIN ──
 if __name__ == '__main__':
     init_db()
     seed_db()
     app.run(debug=True)
+

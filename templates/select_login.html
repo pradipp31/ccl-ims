@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}CCL-IMS — Login Portal{% endblock %}
+{% block content %}
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-head">
+      <div class="ccl-logo">
+        <img src="{{ url_for('static', filename='images/ccl-logo.jpg') }}" alt="CCL Logo" style="height: 70px;">
+      </div>
+      <h1>Central Coalfields Limited</h1>
+      <p class="tagline">Fuelling Sustainable Growth</p>
+      <div class="badge">Internship Management System</div>
+    </div>
+    <div class="login-body" style="text-align:center;">
+      <p style="color:#7f9a7f; margin-bottom:20px; font-size:13px;">Please select how you want to continue</p>
+      <a href="/login" class="btn btn-primary" style="display:block; padding:14px; margin-bottom:14px; text-decoration:none;">Student Login</a>
+      <a href="/officer-login" class="btn" style="display:block; padding:14px; background:#1a2e1a; color:#27ae60; border:1px solid #27ae60; text-decoration:none;">Officer Login (HR / PR / ERP)</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
