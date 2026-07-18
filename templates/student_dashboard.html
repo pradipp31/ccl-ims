@@ -1,35 +1,27 @@
 {% extends "base.html" %}
-{% block title %}Dashboard{% endblock %}
+{% block title %}Student Dashboard{% endblock %}
 {% block content %}
 <div class="dash-wrap">
   <div class="dash-header">
     <div class="ccl-mini">CCL-IMS</div>
     <div class="user-info">
-      {{ name }}
+      {{ name }} 
+      <a href="/notifications" style="color:#f1c40f; margin-right:10px;">📬 Notifications {% if unread_student > 0 %}<span style="background:red; color:white; border-radius:50%; width:20px; height:20px; display:inline-block; text-align:center; font-size:12px;">{{ unread_student }}</span>{% endif %}</a>
       <a href="/logout" class="logout-btn">Logout</a>
     </div>
   </div>
-
   <div class="dash-body">
-    <div class="dash-welcome">Welcome, {{ name }}! 👋</div>
-    <div class="dash-sub">Central Coalfields Limited — Internship Management System</div>
-
+    <div class="dash-welcome">Welcome, {{ name }}</div>
     <div class="dash-cards">
-      <a href="/my-applications" style="text-decoration:none;">
-        <div class="dash-card">
-          <h3>My Applications</h3>
-          <p>Track your internship application status here.</p>
-        </div>
-      </a>
-      <a href="/posts" style="text-decoration:none;">
-        <div class="dash-card">
-          <h3>Available Posts</h3>
-          <p>Browse open internship opportunities.</p>
-        </div>
-      </a>
       <div class="dash-card">
-        <h3>Profile</h3>
-        <p>View and update your registration details.</p>
+        <h3>📋 Available Internships</h3>
+        <p>Browse and apply for internship opportunities</p>
+        <a href="/posts" style="display:inline-block; background:#27ae60; color:#fff; padding:8px 16px; border-radius:3px; text-decoration:none; font-weight:700; margin-top:10px;">View Posts</a>
+      </div>
+      <div class="dash-card">
+        <h3>📊 My Applications</h3>
+        <p>Track the status of your applications</p>
+        <a href="/my-applications" style="display:inline-block; background:#27ae60; color:#fff; padding:8px 16px; border-radius:3px; text-decoration:none; font-weight:700; margin-top:10px;">View Applications</a>
       </div>
     </div>
   </div>

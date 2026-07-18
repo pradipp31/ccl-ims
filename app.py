@@ -2,18 +2,26 @@ import os
 from flask import Flask, render_template, request, redirect, session, url_for
 from datetime import date
 from werkzeug.utils import secure_filename
-from database import (init_db, seed_db, get_student, get_officer, get_all_students,
+from database import (init_db, seed_db, get_student, get_student_by_id, get_officer, get_all_students,
                        get_all_posts, get_post_by_id, save_student, save_application,
-                       get_applications_by_student, get_pending_hr_applications,
+                       get_applications_by_student, get_pending_hr_applications, get_approved_hr_applications,
                        hr_approve_application, hr_reject_application,
-                       get_applications_by_department, update_final_status)
+                       get_applications_by_department, update_final_status,
+                       save_internship_details, get_internship_details,
+                       get_selected_applications_without_details,
+                       create_notification, get_notifications_for_student,
+                       get_notifications_for_hr_admin, mark_notification_as_read,
+                       get_unread_count_student, get_unread_count_hr_admin,
+                       mark_all_notifications_as_read)
 
 app = Flask(__name__)
-app.secret_key = 'ccl-ims-secret-key-2026'
+app.secret_key = 'ccl-ims-secret-key-2026-production'
 
 UPLOAD_FOLDER = os.path.join('static', 'uploads')
 ALLOWED_EXTENSIONS = {'pdf', 'jpg', 'jpeg', 'png'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def allowed_file(filename):
@@ -27,7 +35,16 @@ def save_uploaded_file(file, student_id, doc_name):
         return f"uploads/{filename}"
     return None
 
-# ── HOME — Landing page jahan se Student ya Officer choose karte hain ──
+@app.context_processor
+def inject_unread_counts():
+    unread_student = 0
+    unread_hr = 0
+    if 'student_email' in session:
+        unread_student = get_unread_count_student(session['student_id'])
+    if session.get('officer_role') == 'admin_hr':
+        unread_hr = get_unread_count_hr_admin()
+    return dict(unread_student=unread_student, unread_hr=unread_hr)
+
 @app.route('/')
 def home():
     if 'student_email' in session:
@@ -38,7 +55,6 @@ def home():
         return redirect('/department/dashboard')
     return render_template('select_login.html')
 
-# ── STUDENT LOGIN ──
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
@@ -55,7 +71,6 @@ def login():
             error = "Invalid email or password!"
     return render_template('login.html', error=error)
 
-# ── OFFICER PORTAL — ALAG LOGIN PAGE ──
 @app.route('/officer-login', methods=['GET', 'POST'])
 def officer_login():
     error = None
@@ -76,7 +91,6 @@ def officer_login():
             error = "Invalid officer email or password!"
     return render_template('officer_login.html', error=error)
 
-# ── REGISTER ──
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     error = None
@@ -98,21 +112,18 @@ def register():
                 error = "Email already registered!"
     return render_template('register.html', error=error)
 
-# ── STUDENT DASHBOARD ──
 @app.route('/dashboard')
 def dashboard():
     if 'student_email' not in session:
         return redirect('/login')
     return render_template('student_dashboard.html', name=session['student_name'])
 
-# ── AVAILABLE POSTS ──
 @app.route('/posts')
 def posts():
     if 'student_email' not in session:
         return redirect('/login')
     return render_template('posts.html', posts=get_all_posts())
 
-# ── APPLY FORM — WITH DOCUMENT UPLOAD ──
 @app.route('/apply/<int:post_id>', methods=['GET', 'POST'])
 def apply(post_id):
     if 'student_email' not in session:
@@ -142,7 +153,6 @@ def apply(post_id):
 
     return render_template('apply.html', post=post, submitted=False)
 
-# ── MY APPLICATIONS — STATUS TRACKING ──
 @app.route('/my-applications')
 def my_applications():
     if 'student_email' not in session:
@@ -150,30 +160,60 @@ def my_applications():
     apps = get_applications_by_student(session['student_id'])
     return render_template('my_application.html', applications=apps)
 
-# ── HR ADMIN DASHBOARD — DOCUMENT APPROVAL ──
 @app.route('/hr/dashboard')
 def hr_dashboard():
     if session.get('officer_role') != 'admin_hr':
         return redirect('/officer-login')
-    apps = get_pending_hr_applications()
-    return render_template('hr_dashboard.html', applications=apps, name=session['officer_name'])
+    pending_apps = get_pending_hr_applications()
+    approved_apps = get_approved_hr_applications()
+    return render_template('hr_dashboard.html', pending_applications=pending_apps, approved_applications=approved_apps, name=session['officer_name'])
 
 @app.route('/hr/approve/<int:app_id>', methods=['POST'])
 def hr_approve(app_id):
     if session.get('officer_role') != 'admin_hr':
         return redirect('/officer-login')
+    
     department = request.form['department']
     hr_approve_application(app_id, department)
+    
+    from database import get_db
+    conn = get_db()
+    app_data = conn.execute("SELECT student_id FROM applications WHERE id = ?", (app_id,)).fetchone()
+    conn.close()
+    
+    if app_data:
+        student = get_student_by_id(app_data['student_id'])
+        create_notification('student', app_data['student_id'],
+            'Application Approved by HR',
+            f'Your application has been approved by HR and forwarded to {department} department.',
+            'hr_approved', app_id)
+        create_notification('hr_admin', 0,
+            'Application Approved',
+            f'You approved {student["name"]} - assigned to {department}',
+            'hr_approved', app_id)
+    
     return redirect('/hr/dashboard')
 
 @app.route('/hr/reject/<int:app_id>', methods=['POST'])
 def hr_reject(app_id):
     if session.get('officer_role') != 'admin_hr':
         return redirect('/officer-login')
+    
     hr_reject_application(app_id)
+    
+    from database import get_db
+    conn = get_db()
+    app_data = conn.execute("SELECT student_id FROM applications WHERE id = ?", (app_id,)).fetchone()
+    conn.close()
+    
+    if app_data:
+        create_notification('student', app_data['student_id'],
+            'Application Rejected',
+            'Your application has been rejected by HR.',
+            'hr_rejected', app_id)
+    
     return redirect('/hr/dashboard')
 
-# ── DEPARTMENT OFFICER DASHBOARD (HR / PR / ERP) ──
 @app.route('/department/dashboard')
 def department_dashboard():
     if session.get('officer_role') != 'department':
@@ -188,11 +228,113 @@ def department_dashboard():
 def department_update_status(app_id):
     if session.get('officer_role') != 'department':
         return redirect('/officer-login')
+    
     new_status = request.form['status']
     update_final_status(app_id, new_status)
+    
+    from database import get_db
+    conn = get_db()
+    app_data = conn.execute("SELECT student_id FROM applications WHERE id = ?", (app_id,)).fetchone()
+    conn.close()
+    
+    if app_data:
+        student = get_student_by_id(app_data['student_id'])
+        dept = session['officer_department']
+        
+        if new_status == 'Selected':
+            create_notification('student', app_data['student_id'],
+                'Congratulations! Application Selected',
+                f'Your application has been selected by {dept} department.',
+                'selected', app_id)
+            create_notification('hr_admin', 0,
+                'Application Selected',
+                f'{student["name"]} selected by {dept}. Add internship details.',
+                'selected', app_id)
+        else:
+            create_notification('student', app_data['student_id'],
+                'Application Rejected',
+                f'Your application has been rejected by {dept} department.',
+                'rejected', app_id)
+    
     return redirect('/department/dashboard')
 
-# ── LOGOUT ──
+@app.route('/hr/add-internship-details')
+def hr_manager_internship_details():
+    if session.get('officer_role') != 'admin_hr':
+        return redirect('/officer-login')
+    apps = get_selected_applications_without_details()
+    return render_template('hr_manager_internship_details.html', applications=apps,
+                            name=session['officer_name'])
+
+@app.route('/hr/save-details/<int:app_id>', methods=['POST'])
+def hr_manager_save_details(app_id):
+    if session.get('officer_role') != 'admin_hr':
+        return redirect('/officer-login')
+
+    duration_months = request.form['duration_months']
+    start_date = request.form['start_date']
+    end_date = request.form['end_date']
+    reporting_time_start = request.form['reporting_time_start']
+    reporting_time_end = request.form['reporting_time_end']
+    department = request.form['department']
+    reporting_location = request.form['reporting_location']
+    stipend_amount = request.form.get('stipend_amount', 0)
+    additional_notes = request.form.get('additional_notes', '')
+
+    save_internship_details(app_id, duration_months, start_date, end_date,
+                            reporting_time_start, reporting_time_end, department,
+                            reporting_location, stipend_amount, additional_notes)
+    
+    from database import get_db
+    conn = get_db()
+    app_data = conn.execute("SELECT student_id FROM applications WHERE id = ?", (app_id,)).fetchone()
+    conn.close()
+    
+    if app_data:
+        create_notification('student', app_data['student_id'],
+            'Internship Details Finalized',
+            f'Your internship starts {start_date} at {reporting_time_start}. Check offer letter.',
+            'internship_details_added', app_id)
+    
+    return redirect('/hr/add-internship-details')
+
+@app.route('/internship-offer/<int:app_id>')
+def internship_offer(app_id):
+    if 'student_email' not in session:
+        return redirect('/login')
+
+    apps = get_applications_by_student(session['student_id'])
+    app_ids = [app['id'] for app in apps]
+    if app_id not in app_ids:
+        return redirect('/my-applications')
+
+    details = get_internship_details(app_id)
+    if not details:
+        return redirect('/my-applications')
+
+    return render_template('internship_offer.html', details=details)
+
+@app.route('/notifications')
+def notifications():
+    if 'student_email' not in session:
+        return redirect('/login')
+    
+    student_id = session['student_id']
+    notifs = get_notifications_for_student(student_id)
+    mark_all_notifications_as_read('student', student_id)
+    
+    return render_template('notifications.html', notifications=notifs)
+
+@app.route('/hr/notifications')
+def hr_notifications():
+    if session.get('officer_role') != 'admin_hr':
+        return redirect('/officer-login')
+    
+    notifs = get_notifications_for_hr_admin()
+    mark_all_notifications_as_read('hr_admin')
+    
+    return render_template('hr_notifications.html', notifications=notifs, name=session['officer_name'])
+
 @app.route('/logout')
 def logout():
     session.clear()
@@ -203,7 +345,6 @@ def officer_logout():
     session.clear()
     return redirect('/officer-login')
 
-# ── DEBUG ROUTE — Database verify karne ke liye (testing ke baad hata sakte ho) ──
 @app.route('/test-students')
 def test_students():
     students = get_all_students()
@@ -213,9 +354,10 @@ def test_students():
     output += "</ul>"
     return output
 
-# ── MAIN ──
 if __name__ == '__main__':
     init_db()
     seed_db()
-    app.run(debug=True)
+    app.run(debug=False, host='0.0.0.0', port=5000)
+
+
 

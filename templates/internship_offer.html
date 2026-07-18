@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Internship Offer Letter{% endblock %}
+{% block content %}
+<div class="dash-wrap">
+  <div class="dash-header">
+    <div class="ccl-mini">CCL-IMS</div>
+    <div class="user-info"><a href="/my-applications" style="color:#f0efeb;">Back to Applications</a> <a href="/logout" class="logout-btn">Logout</a></div>
+  </div>
+  <div class="dash-body">
+    <div class="dash-welcome">Internship Offer Letter</div>
+
+    <div style="background:#0d1810; border:2px solid #27ae60; padding:30px; margin-top:20px; border-radius:5px;">
+      <div style="text-align:center; margin-bottom:30px;">
+        <h2 style="color:#27ae60; font-size:24px;">🎉 Congratulations!</h2>
+        <p style="color:#f0efeb; font-size:16px; line-height:1.6;">
+          Your internship application has been approved.<br>
+          <strong>You have been selected for the CCL Internship Program.</strong>
+        </p>
+      </div>
+
+      <h3 style="color:#27ae60; margin-top:30px; margin-bottom:15px;">Central Coalfields Limited</h3>
+      <p style="text-align:center; color:#7f9a7f;">Internship Offer Letter</p>
+
+      <div style="margin-top:30px; line-height:1.8; color:#f0efeb;">
+        <p><strong>📅 Internship Duration:</strong> {{ details['duration_months'] }} Month(s)</p>
+        <p><strong>📍 Start Date:</strong> {{ details['start_date'] }}</p>
+        <p><strong>📍 End Date:</strong> {{ details['end_date'] }}</p>
+
+        <p style="margin-top:20px;"><strong>📍 Reporting Address:</strong></p>
+        <p style="margin-left:20px; background:#1a2e1a; padding:15px; border-left:3px solid #27ae60;">
+          {{ details['reporting_location'] }}<br>
+          Ranchi, Jharkhand
+        </p>
+
+        <p style="margin-top:20px;"><strong>🕐 Joining Date & Reporting Time:</strong></p>
+        <p style="margin-left:20px;">
+          <strong>Date:</strong> {{ details['start_date'] }}<br>
+          <strong>Time:</strong> {{ details['reporting_time_start'] }} to {{ details['reporting_time_end'] }}<br>
+          <strong>Department:</strong> {{ details['department'] }}
+        </p>
+
+        {% if details['stipend_amount'] > 0 %}
+        <p style="margin-top:20px;"><strong>💰 Monthly Stipend:</strong> Rs. {{ details['stipend_amount'] }}</p>
+        {% endif %}
+
+        <p style="margin-top:25px; background:#1a2e1a; padding:15px; border-left:3px solid #27ae60;">
+          <strong>📋 Please carry the following documents:</strong><br>
+          • Aadhaar Card<br>
+          • College ID Card<br>
+          • NOC Certificate<br>
+          • This Offer Letter
+        </p>
+
+        {% if details['additional_notes'] %}
+        <p style="margin-top:20px;"><strong>📝 Additional Information:</strong></p>
+        <p style="margin-left:20px; white-space:pre-wrap;">{{ details['additional_notes'] }}</p>
+        {% endif %}
+
+        <p style="margin-top:30px; color:#27ae60; text-align:center; font-weight:700;">
+          Best wishes for your internship at Central Coalfields Limited!<br>
+          <span style="font-size:14px; color:#7f9a7f;">For any queries, contact the HR department.</span>
+        </p>
+
+        <div style="margin-top:30px; text-align:right; color:#7f9a7f;">
+          <p style="margin:5px 0;">Regards,</p>
+          <p style="margin:5px 0; font-weight:700;">ERP Officer</p>
+          <p style="margin:5px 0;">Central Coalfields Limited</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

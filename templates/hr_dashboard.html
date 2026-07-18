@@ -4,45 +4,87 @@
 <div class="dash-wrap">
   <div class="dash-header">
     <div class="ccl-mini">CCL-IMS · HR Admin</div>
-    <div class="user-info">{{ name }} <a href="/officer-logout" class="logout-btn">Logout</a></div>
+    <div class="user-info">
+      {{ name }} 
+      <a href="/hr/notifications" style="color:#f1c40f; margin-right:10px;">📬 Notifications {% if unread_hr > 0 %}<span style="background:red; color:white; border-radius:50%; width:20px; height:20px; display:inline-block; text-align:center; font-size:12px;">{{ unread_hr }}</span>{% endif %}</a>
+      <a href="/officer-logout" class="logout-btn">Logout</a>
+    </div>
   </div>
   <div class="dash-body">
-    <div class="dash-welcome">Documents Pending Approval</div>
-    <table style="width:100%; border-collapse: collapse; margin-top:20px;">
-      <tr style="border-bottom:1px solid #2d4a2d;">
-        <th style="text-align:left; padding:10px; color:#7f9a7f;">Student</th>
-        <th style="text-align:left; padding:10px; color:#7f9a7f;">Post</th>
-        <th style="text-align:left; padding:10px; color:#7f9a7f;">Documents</th>
-        <th style="text-align:left; padding:10px; color:#7f9a7f;">Action</th>
-      </tr>
-      {% for app in applications %}
-      <tr style="border-bottom:1px solid #2d4a2d;">
-        <td style="padding:10px;">{{ app['name'] }} — {{ app['college'] }}</td>
-        <td style="padding:10px;">{{ app['title'] }}</td>
-        <td style="padding:10px;">
-  <a href="{{ url_for('static', filename=app['photo_path']) }}" target="_blank" style="color:#27ae60;">Photo</a> |
-  <a href="{{ url_for('static', filename=app['resume_path']) }}" target="_blank" style="color:#27ae60;">Resume</a> |
-  <a href="{{ url_for('static', filename=app['aadhar_path']) }}" target="_blank" style="color:#27ae60;">Aadhar</a> |
-  <a href="{{ url_for('static', filename=app['noc_path']) }}" target="_blank" style="color:#27ae60;">NOC</a> |
-  <a href="{{ url_for('static', filename=app['id_card_path']) }}" target="_blank" style="color:#27ae60;">ID Card</a>
-</td>
+    <div class="dash-welcome">Pending Applications for Approval</div>
+    
+    <p style="margin-top:15px;">
+      <a href="/hr/add-internship-details" style="display:inline-block; background:#27ae60; color:#fff; padding:10px 20px; border-radius:3px; text-decoration:none; font-weight:700;">Add Internship Details</a>
+    </p>
+    
+    {% if pending_applications|length == 0 %}
+      <p style="color:#7f9a7f; margin-top:20px;">No pending applications for approval.</p>
+    {% else %}
+      <h3 style="color:#27ae60; margin-top:20px;">Pending Approvals</h3>
+      <table style="width:100%; border-collapse: collapse; margin-top:20px;">
+        <tr style="border-bottom:1px solid #2d4a2d;">
+          <th style="text-align:left; padding:10px; color:#7f9a7f;">Student</th>
+          <th style="text-align:left; padding:10px; color:#7f9a7f;">Post</th>
+          <th style="text-align:left; padding:10px; color:#7f9a7f;">Documents</th>
+          <th style="text-align:left; padding:10px; color:#7f9a7f;">Action</th>
+        </tr>
+        {% for app in pending_applications %}
+        <tr style="border-bottom:1px solid #2d4a2d;">
+          <td style="padding:10px;">{{ app['name'] }} — {{ app['college'] }}</td>
+          <td style="padding:10px;">{{ app['title'] }}</td>
+          <td style="padding:10px;">
+            <a href="{{ url_for('static', filename=app['photo_path']) }}" target="_blank" style="color:#27ae60;">Photo</a> |
+            <a href="{{ url_for('static', filename=app['resume_path']) }}" target="_blank" style="color:#27ae60;">Resume</a> |
+            <a href="{{ url_for('static', filename=app['aadhar_path']) }}" target="_blank" style="color:#27ae60;">Aadhar</a> |
+            <a href="{{ url_for('static', filename=app['noc_path']) }}" target="_blank" style="color:#27ae60;">NOC</a> |
+            <a href="{{ url_for('static', filename=app['id_card_path']) }}" target="_blank" style="color:#27ae60;">ID Card</a>
+          </td>
+          <td style="padding:10px;">
+            <form method="POST" action="/hr/approve/{{ app['id'] }}" style="display:flex; gap:6px; margin-bottom:6px;">
+              <select name="department" style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d;">
+                <option value="HR">HR</option>
+                <option value="PR">PR</option>
+                <option value="ERP">ERP</option>
+              </select>
+              <button type="submit" class="btn btn-primary" style="padding:5px 10px;">Approve</button>
+            </form>
+            <form method="POST" action="/hr/reject/{{ app['id'] }}">
+              <button type="submit" class="btn" style="background:#c0392b; color:#fff; padding:5px 10px;">Reject</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    {% endif %}
 
-        <td style="padding:10px;">
-          <form method="POST" action="/hr/approve/{{ app['id'] }}" style="display:flex; gap:6px; margin-bottom:6px;">
-            <select name="department" style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d;">
-              <option value="HR">HR</option>
-              <option value="PR">PR</option>
-              <option value="ERP">ERP</option>
-            </select>
-            <button type="submit" class="btn btn-primary" style="padding:5px 10px;">Approve</button>
-          </form>
-          <form method="POST" action="/hr/reject/{{ app['id'] }}">
-            <button type="submit" class="btn" style="background:#c0392b; color:#fff; padding:5px 10px;">Reject</button>
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
+    {% if approved_applications|length > 0 %}
+      <h3 style="color:#27ae60; margin-top:40px;">Approved Applications</h3>
+      <table style="width:100%; border-collapse: collapse; margin-top:20px;">
+        <tr style="border-bottom:1px solid #2d4a2d;">
+          <th style="text-align:left; padding:10px; color:#7f9a7f;">Student</th>
+          <th style="text-align:left; padding:10px; color:#7f9a7f;">Post</th>
+          <th style="text-align:left; padding:10px; color:#7f9a7f;">Department</th>
+          <th style="text-align:left; padding:10px; color:#7f9a7f;">Status</th>
+        </tr>
+        {% for app in approved_applications %}
+        <tr style="border-bottom:1px solid #2d4a2d;">
+          <td style="padding:10px;">{{ app['name'] }} — {{ app['college'] }}</td>
+          <td style="padding:10px;">{{ app['title'] }}</td>
+          <td style="padding:10px;">{{ app['assigned_department'] }}</td>
+          <td style="padding:10px;">
+            <span style="padding:3px 8px; border-radius:3px; font-size:11px; font-weight:700;
+              {% if app['final_status'] == 'Pending' %} background:#f1c40f; color:#000;
+              {% elif app['final_status'] == 'Selected' %} background:#27ae60; color:#fff;
+              {% else %} background:#c0392b; color:#fff; {% endif %}">
+              {{ app['final_status'] }}
+            </span>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    {% endif %}
   </div>
 </div>
 {% endblock %}
+
+

@@ -32,9 +32,16 @@
             {{ app['final_status'] }}
           </span>
         </p>
+
+        {% if app['final_status'] == 'Selected' %}
+        <p style="margin-top:12px;">
+          <a href="/internship-offer/{{ app['id'] }}" style="display:inline-block; background:#27ae60; color:#fff; padding:8px 16px; border-radius:3px; text-decoration:none; font-weight:700;">View Offer Letter</a>
+        </p>
+        {% endif %}
       </div>
       {% endfor %}
     </div>
   </div>
 </div>
 {% endblock %}
+

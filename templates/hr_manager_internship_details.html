@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Add Internship Details{% endblock %}
+{% block content %}
+<div class="dash-wrap">
+  <div class="dash-header">
+    <div class="ccl-mini">CCL-IMS · HR Admin</div>
+    <div class="user-info">{{ name }} <a href="/officer-logout" class="logout-btn">Logout</a></div>
+  </div>
+  <div class="dash-body">
+    <div class="dash-welcome">Add Internship Details for Selected Students</div>
+
+    {% if applications|length == 0 %}
+      <p style="color:#7f9a7f; margin-top:20px;">All selected applications already have internship details assigned.</p>
+    {% else %}
+      {% for app in applications %}
+      <div class="dash-card" style="margin-bottom:20px;">
+        <h3>{{ app['name'] }} — {{ app['title'] }}</h3>
+        <p>College: {{ app['college'] }} | Department: {{ app['department'] }}</p>
+
+        <form method="POST" action="/hr/save-details/{{ app['id'] }}" style="margin-top:15px;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:15px;">
+            <div class="form-group">
+              <label>Duration (Months)</label>
+              <input type="number" name="duration_months" min="1" max="12" value="1" required style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d; padding:8px; width:100%; box-sizing:border-box;">
+            </div>
+            <div class="form-group">
+              <label>Start Date</label>
+              <input type="date" name="start_date" required style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d; padding:8px; width:100%; box-sizing:border-box;">
+            </div>
+            <div class="form-group">
+              <label>End Date</label>
+              <input type="date" name="end_date" required style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d; padding:8px; width:100%; box-sizing:border-box;">
+            </div>
+            <div class="form-group">
+              <label>Reporting Time Start (HH:MM)</label>
+              <input type="time" name="reporting_time_start" value="11:00" required style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d; padding:8px; width:100%; box-sizing:border-box;">
+            </div>
+            <div class="form-group">
+              <label>Reporting Time End (HH:MM)</label>
+              <input type="time" name="reporting_time_end" value="13:00" required style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d; padding:8px; width:100%; box-sizing:border-box;">
+            </div>
+            <div class="form-group">
+              <label>Department</label>
+              <input type="text" name="department" value="{{ app['department'] }}" style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d; padding:8px; width:100%; box-sizing:border-box;">
+            </div>
+            <div class="form-group">
+              <label>Reporting Location</label>
+              <input type="text" name="reporting_location" placeholder="e.g., Dhanbad Office, Building A" required style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d; padding:8px; width:100%; box-sizing:border-box;">
+            </div>
+            <div class="form-group">
+              <label>Stipend/Monthly Allowance (Rs.)</label>
+              <input type="number" name="stipend_amount" value="0" min="0" style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d; padding:8px; width:100%; box-sizing:border-box;">
+            </div>
+          </div>
+          <div class="form-group" style="grid-column:1/-1;">
+            <label>Additional Notes</label>
+            <textarea name="additional_notes" rows="3" style="background:#0d1810; color:#f0efeb; border:1px solid #2d4a2d; padding:8px; width:100%; box-sizing:border-box;"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="padding:10px 20px; margin-top:10px;">Save Details</button>
+        </form>
+      </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
