@@ -90,15 +90,11 @@ def init_db():
     conn.close()
 
 def seed_db():
-    """Only seed if tables are completely empty"""
     conn = get_db()
     c = conn.cursor()
 
     c.execute("SELECT COUNT(*) FROM students")
-    student_count = c.fetchone()[0]
-    
-    # Only seed if no students exist (preserve existing data)
-    if student_count == 0:
+    if c.fetchone()[0] == 0:
         students = [
             ("Rahul Kumar", "rahul1@gmail.com", "pass123", "BIT Sindri", "CSE", "3rd"),
             ("Priya Sharma", "priya@gmail.com", "pass123", "NIT Jamshedpur", "ECE", "2nd"),
@@ -155,8 +151,6 @@ def seed_db():
     conn.commit()
     conn.close()
 
-# ==================== STUDENT FUNCTIONS ====================
-
 def get_student(email):
     conn = get_db()
     student = conn.execute("SELECT * FROM students WHERE email = ?", (email,)).fetchone()
@@ -187,15 +181,11 @@ def save_student(name, email, password, college, branch, year):
     finally:
         conn.close()
 
-# ==================== OFFICER FUNCTIONS ====================
-
 def get_officer(email):
     conn = get_db()
     officer = conn.execute("SELECT * FROM officers WHERE email = ?", (email,)).fetchone()
     conn.close()
     return officer
-
-# ==================== POST FUNCTIONS ====================
 
 def get_all_posts():
     conn = get_db()
@@ -208,8 +198,6 @@ def get_post_by_id(post_id):
     post = conn.execute("SELECT * FROM internship_posts WHERE id = ?", (post_id,)).fetchone()
     conn.close()
     return post
-
-# ==================== APPLICATION FUNCTIONS ====================
 
 def save_application(student_id, post_id, applied_date, photo, resume, aadhar, noc, id_card):
     conn = get_db()
@@ -311,8 +299,6 @@ def update_final_status(app_id, new_status):
     finally:
         conn.close()
 
-# ==================== INTERNSHIP DETAILS FUNCTIONS ====================
-
 def save_internship_details(application_id, duration_months, start_date, end_date,
                              reporting_time_start, reporting_time_end, department,
                              reporting_location, stipend_amount=0, additional_notes=""):
@@ -348,8 +334,6 @@ def get_selected_applications_without_details():
     ''').fetchall()
     conn.close()
     return apps
-
-# ==================== NOTIFICATION FUNCTIONS ====================
 
 def create_notification(recipient_type, recipient_id, title, message, notification_type, related_application_id=None):
     conn = get_db()
@@ -423,7 +407,6 @@ def mark_all_notifications_as_read(recipient_type, recipient_id=None):
         conn.commit()
     finally:
         conn.close()
-
 
 
 
